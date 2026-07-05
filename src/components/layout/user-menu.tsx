@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, CircleUserRound, Settings } from "lucide-react";
+import { ChevronDown, CircleUserRound, LogOut, Settings } from "lucide-react";
 import Link from "next/link";
 
 import type { ShellUser } from "@/components/layout/types";
@@ -12,8 +12,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useSignOut } from "@/features/auth/hooks/use-sign-out";
 
 export function UserMenu({ user }: { user: ShellUser }) {
+  const signOut = useSignOut();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -68,6 +71,14 @@ export function UserMenu({ user }: { user: ShellUser }) {
         >
           <Settings aria-hidden="true" />
           Settings
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          className="gap-3 px-3 py-2 text-negative focus-visible:text-negative"
+          onClick={signOut}
+        >
+          <LogOut aria-hidden="true" />
+          Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

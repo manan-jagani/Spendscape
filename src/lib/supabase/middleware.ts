@@ -12,7 +12,12 @@ const PROTECTED_ROUTES = [
   "/settings",
 ] as const;
 
-const AUTH_ROUTES = ["/login", "/signup"] as const;
+const AUTH_ROUTES = [
+  "/auth/login",
+  "/auth/signup",
+  "/auth/forgot-password",
+  "/auth/reset-password",
+] as const;
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -48,8 +53,8 @@ export async function updateSession(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   if (!user && PROTECTED_ROUTES.some((route) => path.startsWith(route))) {
-    const url = new URL("/login", request.url);
-    url.searchParams.set("next", path);
+    const url = new URL("/auth/login", request.url);
+    url.searchParams.set("next", `${path}${request.nextUrl.search}`);
     return NextResponse.redirect(url);
   }
 

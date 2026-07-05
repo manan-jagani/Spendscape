@@ -3,6 +3,7 @@ import type { TransactionFilters } from "@/types/api.types";
 export const queryKeys = {
   profile: () => ["profile"] as const,
   accounts: () => ["accounts"] as const,
+  budgets: () => ["budgets"] as const,
   categories: () => ["categories"] as const,
   insights: () => ["insights"] as const,
   insightsUnread: () => ["insights", "unread"] as const,

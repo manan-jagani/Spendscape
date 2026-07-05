@@ -149,7 +149,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import type { Database } from '@/types/database.types';
 
 const PROTECTED = ['/dashboard', '/accounts', '/transactions', '/insights', '/settings'];
-const AUTH_ONLY = ['/login', '/signup'];
+const AUTH_ONLY = ['/auth/login', '/auth/signup'];
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -178,7 +178,7 @@ export async function updateSession(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   if (!user && PROTECTED.some(p => path.startsWith(p))) {
-    const url = new URL('/login', request.url);
+    const url = new URL('/auth/login', request.url);
     url.searchParams.set('next', path);
     return NextResponse.redirect(url);
   }
@@ -270,7 +270,7 @@ export async function GET(request: Request) {
     if (!error) return NextResponse.redirect(`${origin}${next}`);
   }
 
-  return NextResponse.redirect(`${origin}/login?error=auth_callback_failed`);
+  return NextResponse.redirect(`${origin}/auth/login?error=auth_callback_failed`);
 }
 ```
 
@@ -294,7 +294,7 @@ const { error } = await supabase.auth.signInWithPassword({ email, password });
 // Client Component
 const supabase = createClient();  // browser client
 await supabase.auth.signOut();
-router.push('/login');
+router.push('/auth/login');
 router.refresh();  // clears the RSC cache — required
 ```
 
@@ -634,11 +634,11 @@ Keep query wrappers thin — they should be typed pass-throughs, not business lo
 ```typescript
 // ❌ Never use getSession() for access control — it reads local cache
 const { data: { session } } = await supabase.auth.getSession();
-if (!session) redirect('/login');  // WRONG — can be spoofed
+if (!session) redirect('/auth/login');  // WRONG — can be spoofed
 
 // ✅ Always use getUser() — it validates with the Supabase Auth server
 const { data: { user } } = await supabase.auth.getUser();
-if (!user) redirect('/login');
+if (!user) redirect('/auth/login');
 ```
 
 ```typescript
@@ -858,8 +858,8 @@ The `proxy.ts` file at the project root **must exist and must not be renamed to 
 
 **What the proxy does (do not bypass):**
 1. Refreshes the Supabase session token on every request — keeps the cookie-based session alive
-2. Redirects unauthenticated users away from protected routes to `/login?next={path}`
-3. Redirects authenticated users away from `/login` and `/signup` to `/dashboard`
+2. Redirects unauthenticated users away from protected routes to `/auth/login?next={path}`
+3. Redirects authenticated users away from `/auth/login` and `/auth/signup` to `/dashboard`
 
 **Currently protected routes** (defined in `lib/supabase/middleware.ts`):
 ```
