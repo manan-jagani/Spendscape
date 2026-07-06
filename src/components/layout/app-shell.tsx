@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import type { PropsWithChildren } from "react";
 
 import { CommandPalette } from "@/components/layout/command-palette";
@@ -10,6 +11,14 @@ import type {
   ShellUser,
 } from "@/components/layout/types";
 import { PageTransition } from "@/components/motion/page-transition";
+
+const DeepSpaceBackground = dynamic(
+  () =>
+    import("@/components/backgrounds/DeepSpaceBackground").then(
+      (m) => m.DeepSpaceBackground,
+    ),
+  { ssr: false },
+);
 
 interface AppShellProps extends PropsWithChildren {
   insightCount: number;
@@ -24,10 +33,11 @@ export function AppShell({
   user,
 }: AppShellProps) {
   return (
-    <div className="min-h-dvh bg-background">
+    <div className="min-h-dvh bg-[#05060A]">
+      <DeepSpaceBackground />
       <Sidebar insightCount={insightCount} />
       <MobileSidebar insightCount={insightCount} />
-      <div className="min-h-dvh lg:pl-64">
+      <div className="relative z-10 min-h-dvh lg:pl-64">
         <TopNavigation notifications={notifications} user={user} />
         <main id="main-content">
           <PageTransition>{children}</PageTransition>

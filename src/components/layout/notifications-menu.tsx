@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -37,7 +38,7 @@ export function NotificationsMenu({
       >
         <Bell aria-hidden="true" />
         {hasUnread ? (
-          <span className="absolute top-2 right-2 size-1.5 rounded-full bg-investment ring-2 ring-background" />
+          <span className="absolute top-1.5 right-1.5 size-2 rounded-full bg-investment ring-[3px] ring-background" />
         ) : null}
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -45,16 +46,17 @@ export function NotificationsMenu({
         className="w-[min(22rem,calc(100vw-2rem))] rounded-lg p-2 shadow-card-hover"
         sideOffset={8}
       >
-        <DropdownMenuLabel className="flex items-center justify-between px-3 py-2">
-          <span className="text-sm font-medium text-foreground">
-            Notifications
-          </span>
-          <span className="text-xs font-normal text-muted-foreground">
-            {notifications.length} new
-          </span>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {notifications.map((notification) => (
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="flex items-center justify-between px-3 py-2">
+            <span className="text-sm font-medium text-foreground">
+              Notifications
+            </span>
+            <span className="text-xs font-normal text-muted-foreground">
+              {notifications.length} new
+            </span>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {notifications.map((notification) => (
           <DropdownMenuItem
             className="items-start gap-3 px-3 py-3"
             key={notification.id}
@@ -77,6 +79,7 @@ export function NotificationsMenu({
             </span>
           </DropdownMenuItem>
         ))}
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="justify-center py-2 text-xs font-medium"

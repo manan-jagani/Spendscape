@@ -21,7 +21,7 @@ const AuthField = forwardRef<HTMLInputElement, AuthFieldProps>(
         </label>
         <input
           className={cn(
-            "flex h-10 w-full rounded-lg border bg-background px-3 py-2 text-sm text-foreground outline-none transition-colors duration-fast ease-standard placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none",
+            "flex h-10 w-full rounded-lg border bg-background px-3 py-2 text-sm text-foreground outline-none transition-all duration-fast ease-standard placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:bg-background/85 focus-visible:glass focus-visible:backdrop-blur-[12px] motion-reduce:transition-none",
             error
               ? "border-negative focus-visible:ring-negative"
               : "border-input hover:border-foreground/20",

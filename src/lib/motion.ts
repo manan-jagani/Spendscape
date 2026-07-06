@@ -4,7 +4,8 @@ export const MOTION_DURATION = {
   fast: 0.15,
   normal: 0.25,
   large: 0.4,
-  page: 0.5,
+  page: 0.3,
+  charts: 0.6,
 } as const;
 
 export const MOTION_EASING = {
@@ -27,6 +28,10 @@ export const MOTION_TRANSITION = {
   },
   page: {
     duration: MOTION_DURATION.page,
+    ease: MOTION_EASING.emphasized,
+  },
+  charts: {
+    duration: MOTION_DURATION.charts,
     ease: MOTION_EASING.emphasized,
   },
 } satisfies Record<string, Transition>;

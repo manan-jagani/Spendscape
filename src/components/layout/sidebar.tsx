@@ -39,19 +39,25 @@ function NavigationLinks({
             <Link
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "group flex h-10 items-center gap-3 rounded-md px-3 text-sm transition-colors duration-fast ease-standard outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring motion-reduce:transition-none",
+                "group relative flex h-10 items-center gap-3 rounded-md px-3 text-sm transition-all duration-fast ease-standard outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring motion-reduce:transition-none",
                 isActive
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                  : "text-muted-foreground hover:bg-sidebar-accent/70 hover:text-sidebar-foreground",
+                  ? "bg-sidebar-accent/25 text-sidebar-foreground shadow-[inset_0_0_0_1px_oklch(1_0_0/0.06)] backdrop-blur-[4px]"
+                  : "text-muted-foreground hover:bg-sidebar-accent/15 hover:backdrop-blur-[4px] hover:text-sidebar-foreground hover:shadow-[inset_0_0_0_1px_oklch(1_0_0/0.04)]",
               )}
               href={item.href}
               key={item.href}
               onClick={onNavigate}
             >
+              {isActive ? (
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-y-1.5 left-0 w-0.5 rounded-r-md bg-sidebar-accent-foreground/30"
+                />
+              ) : null}
               <Icon
                 aria-hidden="true"
                 className={cn(
-                  "size-4",
+                  "size-4 transition-transform duration-fast group-hover:scale-110 motion-reduce:transition-none",
                   isActive
                     ? "text-sidebar-foreground"
                     : "text-muted-foreground group-hover:text-sidebar-foreground",
@@ -60,7 +66,7 @@ function NavigationLinks({
               />
               <span>{item.label}</span>
               {item.label === "Insights" ? (
-                <span className="ml-auto rounded-full bg-investment/15 px-2 py-0.5 text-[0.6875rem] font-medium text-investment">
+                <span className="ml-auto rounded-full bg-investment/15 px-2 py-0.5 text-[0.6875rem] font-medium text-investment ring-1 ring-inset ring-investment/20">
                   {insightCount}
                 </span>
               ) : null}
@@ -78,13 +84,19 @@ function NavigationLinks({
             <Link
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "flex h-10 items-center gap-3 rounded-md px-3 text-sm text-muted-foreground transition-colors duration-fast ease-standard outline-none hover:bg-sidebar-accent/70 hover:text-sidebar-foreground focus-visible:ring-2 focus-visible:ring-sidebar-ring motion-reduce:transition-none",
-                isActive && "bg-sidebar-accent text-sidebar-foreground",
+                "group relative flex h-10 items-center gap-3 rounded-md px-3 text-sm text-muted-foreground transition-all duration-fast ease-standard outline-none hover:bg-sidebar-accent/15 hover:backdrop-blur-[4px] hover:text-sidebar-foreground hover:shadow-[inset_0_0_0_1px_oklch(1_0_0/0.04)] focus-visible:ring-2 focus-visible:ring-sidebar-ring motion-reduce:transition-none",
+                isActive && "bg-sidebar-accent/25 text-sidebar-foreground shadow-[inset_0_0_0_1px_oklch(1_0_0/0.06)] backdrop-blur-[4px]",
               )}
               href={item.href}
               key={item.href}
               onClick={onNavigate}
             >
+              {isActive ? (
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-y-1.5 left-0 w-0.5 rounded-r-md bg-sidebar-accent-foreground/30"
+                />
+              ) : null}
               <Icon aria-hidden="true" className="size-4" strokeWidth={1.8} />
               {item.label}
             </Link>
@@ -118,7 +130,7 @@ function SidebarContent({ insightCount }: { insightCount: number }) {
 
 export function Sidebar({ insightCount }: { insightCount: number }) {
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar/95 backdrop-blur-xl lg:flex">
+    <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col glass-premium-sidebar lg:flex">
       <SidebarContent insightCount={insightCount} />
     </aside>
   );

@@ -20,7 +20,7 @@ export function Brand({ className, compact = false }: BrandProps) {
       )}
       href="/dashboard"
     >
-      <span className="grid size-9 place-items-center rounded-md bg-primary text-primary-foreground shadow-sm">
+      <span className="grid size-9 place-items-center rounded-md bg-primary text-primary-foreground shadow-sm transition-transform duration-fast hover:scale-105 motion-reduce:transition-none">
         <Mark aria-hidden="true" className="size-4" strokeWidth={1.8} />
       </span>
       {!compact ? (

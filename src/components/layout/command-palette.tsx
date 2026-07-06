@@ -43,7 +43,7 @@ export function CommandPalette() {
         <DialogDescription className="sr-only">
           Search and navigate through Spendscape.
         </DialogDescription>
-        <CommandPrimitive className="flex max-h-[28rem] flex-col">
+        <CommandPrimitive className="flex max-h-[60dvh] flex-col sm:max-h-[28rem]">
           <div className="flex h-14 items-center gap-3 border-b border-border px-4">
             <Search
               aria-hidden="true"
@@ -52,7 +52,7 @@ export function CommandPalette() {
             <CommandPrimitive.Input
               aria-label="Search commands"
               autoFocus
-              className="h-full flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground"
+              className="h-full flex-1 bg-transparent text-sm outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-inset"
               placeholder="Search pages and actions…"
             />
             <kbd className="rounded-sm border border-border bg-muted px-1.5 py-0.5 font-sans text-[0.6875rem] text-muted-foreground">
@@ -72,7 +72,7 @@ export function CommandPalette() {
 
                 return (
                   <CommandPrimitive.Item
-                    className="flex h-10 cursor-default items-center gap-3 rounded-md px-3 text-sm font-normal text-foreground outline-none data-[selected=true]:bg-accent"
+                    className="flex h-10 cursor-default items-center gap-3 rounded-md px-3 text-sm font-normal text-foreground outline-none transition-colors duration-fast data-[selected=true]:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset motion-reduce:transition-none"
                     key={item.href}
                     onSelect={() => navigate(item.href)}
                     value={item.label}

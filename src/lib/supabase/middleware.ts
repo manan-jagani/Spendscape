@@ -8,6 +8,7 @@ const PROTECTED_ROUTES = [
   "/dashboard",
   "/accounts",
   "/transactions",
+  "/budgets",
   "/insights",
   "/settings",
 ] as const;

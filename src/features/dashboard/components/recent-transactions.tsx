@@ -50,7 +50,7 @@ export function RecentTransactions({
 
             return (
               <li
-                className="flex items-center gap-3 py-4 first:pt-2 last:pb-0"
+                className="flex items-center gap-3 py-4 first:pt-2 last:pb-0 transition-colors duration-fast ease-standard hover:bg-muted/30 -mx-(--card-spacing) px-(--card-spacing) motion-reduce:transition-none"
                 key={transaction.id}
               >
                 <span

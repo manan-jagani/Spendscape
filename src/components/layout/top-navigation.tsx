@@ -28,7 +28,7 @@ export function TopNavigation({
   );
 
   return (
-    <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-20 glass-premium-nav">
       <div className="flex h-16 items-center gap-3 px-4 sm:px-6 lg:px-8">
         <Button
           aria-label="Open navigation"

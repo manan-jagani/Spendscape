@@ -40,7 +40,7 @@ export function AuthCard({
           </Link>
         </div>
 
-        <div className="rounded-xl border border-border bg-card p-6 shadow-card sm:p-8">
+        <div className="rounded-xl border border-border/60 bg-background/80 p-6 shadow-xl backdrop-blur-xl sm:p-8">
           {children}
         </div>
       </div>

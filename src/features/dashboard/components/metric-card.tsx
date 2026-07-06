@@ -38,11 +38,16 @@ export function MetricCard({
   const { accent, icon: Icon } = TONE_STYLES[tone];
 
   return (
-    <Card className="min-h-44">
+    <Card className="min-h-44 transition-transform duration-normal ease-standard hover:-translate-y-0.5 hover:shadow-card-hover motion-reduce:transition-none motion-reduce:hover:translate-y-0">
       <CardContent className="flex h-full flex-col justify-between">
         <div className="flex items-center justify-between">
           <p className="text-sm text-muted-foreground">{label}</p>
-          <span className={cn("grid size-8 place-items-center rounded-md", accent)}>
+          <span
+            className={cn(
+              "grid size-8 place-items-center rounded-md transition-all duration-fast ease-standard group-hover/card:scale-110 group-hover/card:shadow-sm motion-reduce:transition-none",
+              accent,
+            )}
+          >
             <Icon aria-hidden="true" className="size-4" strokeWidth={1.8} />
           </span>
         </div>

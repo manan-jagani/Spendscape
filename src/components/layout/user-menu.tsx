@@ -7,6 +7,7 @@ import type { ShellUser } from "@/components/layout/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -49,29 +50,31 @@ export function UserMenu({ user }: { user: ShellUser }) {
         className="w-64 rounded-lg p-2 shadow-card-hover"
         sideOffset={8}
       >
-        <DropdownMenuLabel className="px-3 py-2">
-          <span className="block text-sm font-medium text-foreground">
-            {user.name}
-          </span>
-          <span className="mt-0.5 block truncate text-xs font-normal text-muted-foreground">
-            {user.email}
-          </span>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className="gap-3 px-3 py-2"
-          render={<Link href="/profile" />}
-        >
-          <CircleUserRound aria-hidden="true" />
-          Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          className="gap-3 px-3 py-2"
-          render={<Link href="/settings" />}
-        >
-          <Settings aria-hidden="true" />
-          Settings
-        </DropdownMenuItem>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="px-3 py-2">
+            <span className="block text-sm font-medium text-foreground">
+              {user.name}
+            </span>
+            <span className="mt-0.5 block truncate text-xs font-normal text-muted-foreground">
+              {user.email}
+            </span>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="gap-3 px-3 py-2"
+            render={<Link href="/settings" />}
+          >
+            <CircleUserRound aria-hidden="true" />
+            Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="gap-3 px-3 py-2"
+            render={<Link href="/settings" />}
+          >
+            <Settings aria-hidden="true" />
+            Settings
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="gap-3 px-3 py-2 text-negative focus-visible:text-negative"

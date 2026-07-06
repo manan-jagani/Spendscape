@@ -23,7 +23,7 @@ export function Breadcrumbs() {
       <ol className="flex items-center gap-2 text-sm">
         <li className="hidden text-muted-foreground sm:block">
           <Link
-            className="rounded-sm outline-none transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+            className="rounded-sm outline-none transition-all duration-fast hover:text-foreground hover:bg-muted/50 hover:px-1.5 hover:-mx-1.5 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
             href="/dashboard"
           >
             Workspace
@@ -37,14 +37,19 @@ export function Breadcrumbs() {
             <li className="flex items-center gap-2" key={href}>
               <ChevronRight
                 aria-hidden="true"
-                className="hidden size-3 text-muted-foreground sm:block"
+                className="hidden size-3 text-muted-foreground/50 sm:block"
               />
               {isCurrent ? (
-                <span aria-current="page" className="font-medium">
+                <span aria-current="page" className="font-medium text-foreground">
                   {LABELS[segment] ?? segment}
                 </span>
               ) : (
-                <Link href={href}>{LABELS[segment] ?? segment}</Link>
+                <Link
+                  className="rounded-sm outline-none transition-all duration-fast hover:bg-muted/50 hover:px-1.5 hover:-mx-1.5 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+                  href={href}
+                >
+                  {LABELS[segment] ?? segment}
+                </Link>
               )}
             </li>
           );

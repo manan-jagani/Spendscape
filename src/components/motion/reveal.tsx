@@ -9,9 +9,15 @@ import { cn } from "@/lib/utils";
 interface RevealProps extends PropsWithChildren {
   className?: string;
   delay?: number;
+  distance?: number;
 }
 
-export function Reveal({ children, className, delay = 0 }: RevealProps) {
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+  distance = 12,
+}: RevealProps) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -19,12 +25,12 @@ export function Reveal({ children, className, delay = 0 }: RevealProps) {
       animate={{ opacity: 1, y: 0 }}
       className={cn(className)}
       initial={
-        shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 12 }
+        shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: distance }
       }
       transition={
         shouldReduceMotion
           ? { duration: 0 }
-          : { ...MOTION_TRANSITION.large, delay }
+          : { ...MOTION_TRANSITION.normal, delay }
       }
     >
       {children}

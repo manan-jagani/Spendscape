@@ -44,7 +44,7 @@ export function SignUpForm() {
     return (
       <AuthCard>
         <div className="flex flex-col items-center text-center">
-          <div className="mb-4 flex size-12 items-center justify-center rounded-full bg-positive/15">
+          <div className="mb-4 grid size-14 place-items-center rounded-full bg-positive/10 ring-1 ring-positive/20">
             <MailCheck
               aria-hidden="true"
               className="size-6 text-positive"

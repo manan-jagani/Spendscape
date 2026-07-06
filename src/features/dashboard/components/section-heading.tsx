@@ -15,17 +15,19 @@ export function SectionHeading({
 }: SectionHeadingProps) {
   return (
     <div className="flex items-start justify-between gap-4">
-      <div>
-        <h2 className="font-heading text-base font-medium tracking-tight">
+      <div className="min-w-0">
+        <h2 className="font-heading text-base font-medium tracking-tight text-foreground">
           {title}
         </h2>
         {description ? (
-          <p className="mt-1 text-xs text-muted-foreground">{description}</p>
+          <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+            {description}
+          </p>
         ) : null}
       </div>
       {actionHref && actionLabel ? (
         <Link
-          className="shrink-0 rounded-sm text-xs font-medium text-muted-foreground outline-none transition-colors duration-fast hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
+          className="shrink-0 rounded-sm text-xs font-medium text-muted-foreground outline-none transition-all duration-fast ease-standard hover:text-foreground hover:underline focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
           href={actionHref}
         >
           {actionLabel}

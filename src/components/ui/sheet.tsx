@@ -18,10 +18,11 @@ function SheetContent({
 }: SheetPrimitive.Popup.Props) {
   return (
     <SheetPrimitive.Portal>
-      <SheetPrimitive.Backdrop className="fixed inset-0 z-50 bg-background/70 backdrop-blur-sm transition-opacity duration-normal data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none" />
+      <SheetPrimitive.Backdrop className="fixed inset-0 z-50 bg-background/60 backdrop-blur-md transition-opacity duration-normal data-ending-style:opacity-0 data-starting-style:opacity-0 motion-reduce:transition-none" />
       <SheetPrimitive.Popup
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-[min(20rem,88vw)] flex-col border-r border-border bg-sidebar text-sidebar-foreground shadow-card-hover outline-none transition duration-normal ease-standard data-ending-style:-translate-x-10 data-ending-style:opacity-0 data-starting-style:-translate-x-10 data-starting-style:opacity-0 motion-reduce:transition-none",
+          "fixed inset-y-0 left-0 z-50 flex w-[min(20rem,88vw)] flex-col border-r border-sidebar-border bg-sidebar/90 text-sidebar-foreground outline-none transition duration-normal ease-standard data-ending-style:-translate-x-10 data-ending-style:opacity-0 data-starting-style:-translate-x-10 data-starting-style:opacity-0 motion-reduce:transition-none",
+          "glass-elevated",
           className,
         )}
         data-slot="sheet-content"

@@ -2,19 +2,19 @@
 
 import { useMemo } from "react";
 
-import { PageContainer } from "@/components/layout/page-container";
 import { Reveal } from "@/components/motion/reveal";
 import { AccountsOverview } from "@/features/dashboard/components/accounts-overview";
 import { BudgetOverview } from "@/features/dashboard/components/budget-overview";
 import { DashboardError } from "@/features/dashboard/components/dashboard-error";
 import { DashboardSkeleton } from "@/features/dashboard/components/dashboard-skeleton";
-import { InsightPreview } from "@/features/dashboard/components/insight-preview";
 import { MetricCard } from "@/features/dashboard/components/metric-card";
 import { RecentTransactions } from "@/features/dashboard/components/recent-transactions";
-import { VisualizationPlaceholder } from "@/features/dashboard/components/visualization-placeholder";
+import { FinancialHealthScore } from "@/features/dashboard/components/intelligence/financial-health-score";
+import { SpendingStreak } from "@/features/dashboard/components/intelligence/spending-streak";
+import { TodaysHighlights } from "@/features/dashboard/components/intelligence/todays-highlights";
+import { FinancialGalaxy } from "@/visualizations/galaxy/components/financial-galaxy";
 import { useAccounts } from "@/features/dashboard/hooks/use-accounts";
 import { useBudgets } from "@/features/dashboard/hooks/use-budgets";
-import { useInsights } from "@/features/dashboard/hooks/use-insight";
 import { useMonthlySummary } from "@/features/dashboard/hooks/use-monthly-summary";
 import { useRecentTransactions } from "@/features/dashboard/hooks/use-recent-transactions";
 import {
@@ -26,6 +26,11 @@ import {
   getGreeting,
 } from "@/lib/formatters";
 import type { Tables } from "@/types/database.types";
+import { ChartCard } from "@/visualizations/lib/chart-card";
+import { useDailyExpenses } from "@/visualizations/lib/use-daily-expenses";
+import { CalendarHeatmap } from "@/visualizations/heatmap/components/calendar-heatmap";
+import { MonthlyTimeline } from "@/visualizations/timeline/components/monthly-timeline";
+import { SpendingTreemap } from "@/visualizations/treemap/components/spending-treemap";
 
 export function Dashboard() {
   const currentMonth = useMemo(() => getCurrentMonthFirst(), []);
@@ -33,21 +38,28 @@ export function Dashboard() {
   const accounts = useAccounts();
   const transactions = useRecentTransactions(4);
   const budgets = useBudgets();
-  const insights = useInsights();
+  const dailyExpenses = useDailyExpenses(0);
+  const dailyExpensesMulti = useDailyExpenses(3);
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonthNum = now.getMonth() + 1;
 
   const isAnyLoading =
     summary.isLoading ||
     accounts.isLoading ||
     transactions.isLoading ||
     budgets.isLoading ||
-    insights.isLoading;
+    dailyExpenses.isLoading ||
+    dailyExpensesMulti.isLoading;
 
   const isAnyError =
     summary.isError ||
     accounts.isError ||
     transactions.isError ||
     budgets.isError ||
-    insights.isError;
+    dailyExpenses.isError ||
+    dailyExpensesMulti.isError;
 
   if (isAnyLoading) {
     return <DashboardSkeleton />;
@@ -61,7 +73,8 @@ export function Dashboard() {
           accounts.refetch();
           transactions.refetch();
           budgets.refetch();
-          insights.refetch();
+          dailyExpenses.refetch();
+          dailyExpensesMulti.refetch();
         }}
       />
     );
@@ -71,7 +84,6 @@ export function Dashboard() {
   const accountsData = accounts.data ?? [];
   const transactionsData = transactions.data;
   const budgetsData = budgets.data ?? [];
-  const insightsData = insights.data ?? [];
 
   const greeting = getGreeting();
   const dateStr = getFormattedDate();
@@ -163,84 +175,137 @@ export function Dashboard() {
     };
   });
 
-  const latestInsight = insightsData.find((i) => !i.is_read) ?? insightsData[0];
-  const insightPreview = latestInsight
-    ? {
-        eyebrow: latestInsight.kind.charAt(0).toUpperCase() + latestInsight.kind.slice(1),
-        title: latestInsight.title,
-        description: latestInsight.body,
-        action: "Explore this insight",
-      }
-    : undefined;
+  const treemapCategories = summaryData.categories
+    .filter((c) => c.total > 0 && c.category_name)
+    .map((c) => ({
+      name: c.category_name ?? "Uncategorized",
+      value: c.total,
+      color: c.color ?? "hsl(var(--muted-foreground))",
+    }));
 
   return (
-    <PageContainer>
-      <Reveal>
-        <header className="max-w-3xl">
-          <p className="text-xs font-medium tracking-[0.14em] text-muted-foreground uppercase">
-            {dateStr}
-          </p>
-          <h1 className="mt-3 font-heading text-3xl font-medium tracking-[-0.045em] sm:text-4xl">
-            {greeting}.
-          </h1>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
-            {summaryData.savings_rate > 0
-              ? `You're saving ${summaryData.savings_rate}% of your income this month.`
-              : summaryData.expense > 0
-                ? `You've spent ${formatCurrency(summaryData.expense)} so far this month.`
-                : "Add transactions to see your financial overview."}
-          </p>
-        </header>
-      </Reveal>
+    <div className="px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+      <div className="grid grid-cols-12 gap-6">
 
-      <section aria-labelledby="financial-summary" className="mt-10">
-        <h2 className="sr-only" id="financial-summary">
-          Financial summary
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {metrics.map((metric, index) => (
-            <Reveal delay={index * 0.04} key={metric.id}>
-              <MetricCard {...metric} />
-            </Reveal>
-          ))}
-        </div>
-      </section>
+        {/* ── Row 1: Greeting ── */}
+        <Reveal className="col-span-12" delay={0}>
+          <header className="max-w-3xl">
+            <p className="text-[0.625rem] font-medium tracking-[0.15em] text-muted-foreground uppercase">
+              {dateStr}
+            </p>
+            <h1 className="mt-2 font-heading text-3xl font-medium tracking-[-0.045em] sm:text-4xl">
+              {greeting}.
+            </h1>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
+              {summaryData.savings_rate > 0
+                ? `You're saving ${summaryData.savings_rate}% of your income this month.`
+                : summaryData.expense > 0
+                  ? `You've spent ${formatCurrency(summaryData.expense)} so far this month.`
+                  : "Add transactions to see your financial overview."}
+            </p>
+          </header>
+        </Reveal>
 
-      <div className="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-12">
-        <Reveal className="xl:col-span-8" delay={0.08}>
-          <VisualizationPlaceholder
-            description="A relationship view of accounts, categories, and goals will live here once visualization data is connected."
-            eyebrow="Coming into focus"
-            question={`How is your money distributed across the life you're building?`}
-            title="Your Financial Galaxy"
+        {/* ── Row 2: 4 KPI cards (3+3+3+3) ── */}
+        {metrics.map((metric, index) => (
+          <Reveal
+            className="col-span-3 flex flex-col [&>*]:flex-1"
+            delay={index * 0.04}
+            key={metric.id}
+          >
+            <MetricCard {...metric} />
+          </Reveal>
+        ))}
+
+        {/* ── Row 3: Financial Galaxy (8) + Accounts (4) ── */}
+        <Reveal className="col-span-8 flex flex-col [&>*]:flex-1" delay={0.08}>
+          <ChartCard
+            className="[&_[data-slot=card-content]>div]:bg-black/15"
+            description="How your money is distributed across accounts, categories, and budgets"
+            minHeight={440}
+            title="Financial Galaxy"
+          >
+            <FinancialGalaxy
+              accounts={accountsData}
+              budgets={budgetsData}
+              categories={summaryData.categories}
+              netWorth={summaryData.total_balance}
+              recentTransactions={transactionsData?.rows ?? []}
+            />
+          </ChartCard>
+        </Reveal>
+
+        <Reveal className="col-span-4 flex flex-col [&>*]:flex-1" delay={0.12}>
+          <AccountsOverview accounts={accountItems} />
+        </Reveal>
+
+        {/* ── Row 4: Recent Transactions (8) + Budget Pace (4) ── */}
+        <Reveal className="col-span-8 flex flex-col [&>*]:flex-1" delay={0.12}>
+          <RecentTransactions transactions={recentTransactionItems} />
+        </Reveal>
+
+        <Reveal className="col-span-4 flex flex-col [&>*]:flex-1" delay={0.16}>
+          <BudgetOverview budgets={budgetItems} />
+        </Reveal>
+
+        {/* ── Row 5: Financial Health + Highlights + Streak (4+4+4) ── */}
+        <Reveal className="col-span-4 flex flex-col [&>*]:flex-1" delay={0.2}>
+          <FinancialHealthScore
+            accounts={accountsData}
+            budgets={budgetItems}
+            summary={summaryData}
           />
         </Reveal>
 
-        {insightPreview ? (
-          <Reveal className="xl:col-span-4" delay={0.12}>
-            <InsightPreview {...insightPreview} />
-          </Reveal>
-        ) : null}
+        <Reveal className="col-span-4 flex flex-col [&>*]:flex-1" delay={0.24}>
+          <TodaysHighlights
+            budgets={budgetItems}
+            summary={summaryData}
+            transactions={transactionsData?.rows ?? []}
+          />
+        </Reveal>
 
-        {recentTransactionItems.length > 0 ? (
-          <Reveal className="xl:col-span-7" delay={0.12}>
-            <RecentTransactions transactions={recentTransactionItems} />
-          </Reveal>
-        ) : null}
+        <Reveal className="col-span-4 flex flex-col [&>*]:flex-1" delay={0.28}>
+          <SpendingStreak savingsRate={summaryData.savings_rate} />
+        </Reveal>
 
-        <div className="grid gap-6 xl:col-span-5">
-          {accountItems.length > 0 ? (
-            <Reveal delay={0.16}>
-              <AccountsOverview accounts={accountItems} />
-            </Reveal>
-          ) : null}
-          {budgetItems.length > 0 ? (
-            <Reveal delay={0.2}>
-              <BudgetOverview budgets={budgetItems} />
-            </Reveal>
-          ) : null}
-        </div>
+        {/* ── Row 6: Spending By Category (12) ── */}
+        <Reveal className="col-span-12 flex flex-col [&>*]:flex-1" delay={0.32}>
+          <ChartCard
+            description="Where your money went this month"
+            title="Spending by Category"
+          >
+            <SpendingTreemap categories={treemapCategories} />
+          </ChartCard>
+        </Reveal>
+
+        {/* ── Row 7: Monthly Timeline (6) + Spending Heatmap (6) ── */}
+        <Reveal className="col-span-6 flex flex-col [&>*]:flex-1" delay={0.36}>
+          <ChartCard
+            description="Your daily spending pattern"
+            title="Monthly Timeline"
+          >
+            <MonthlyTimeline
+              data={dailyExpenses.data ?? []}
+              month={currentMonthNum}
+              year={currentYear}
+            />
+          </ChartCard>
+        </Reveal>
+
+        <Reveal className="col-span-6 flex flex-col [&>*]:flex-1" delay={0.4}>
+          <ChartCard
+            description="Expense intensity over time"
+            title="Spending Heatmap"
+          >
+            <CalendarHeatmap
+              data={dailyExpensesMulti.data ?? []}
+              months={4}
+            />
+          </ChartCard>
+        </Reveal>
+
       </div>
-    </PageContainer>
+    </div>
   );
 }

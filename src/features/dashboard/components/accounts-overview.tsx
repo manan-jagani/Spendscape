@@ -37,7 +37,7 @@ export function AccountsOverview({
       <CardContent>
         <ul className="space-y-4">
           {accounts.map((account) => (
-            <li className="flex items-center gap-3" key={account.id}>
+            <li className="flex items-center gap-3 transition-colors duration-fast ease-standard hover:bg-muted/30 -mx-(--card-spacing) px-(--card-spacing) rounded-sm motion-reduce:transition-none" key={account.id}>
               <span className="relative grid size-9 shrink-0 place-items-center rounded-md bg-muted text-muted-foreground">
                 <Landmark
                   aria-hidden="true"

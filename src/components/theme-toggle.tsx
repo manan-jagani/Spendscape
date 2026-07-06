@@ -38,7 +38,18 @@ export function ThemeToggle({ className }: { className?: string }) {
       size="icon"
       variant="ghost"
     >
-      {isDark ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}
+      <span className="relative size-4">
+        <Sun
+          aria-hidden="true"
+          className={`absolute inset-0 size-4 transition-all duration-500 motion-reduce:transition-none ${isDark ? "scale-100 rotate-0 opacity-100" : "scale-0 rotate-90 opacity-0"}`}
+          style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)" }}
+        />
+        <Moon
+          aria-hidden="true"
+          className={`absolute inset-0 size-4 transition-all duration-500 motion-reduce:transition-none ${isDark ? "scale-0 -rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"}`}
+          style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)" }}
+        />
+      </span>
     </Button>
   );
 }

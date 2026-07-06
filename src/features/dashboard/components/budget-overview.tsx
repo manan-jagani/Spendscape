@@ -57,12 +57,17 @@ export function BudgetOverview({
                     <span
                       aria-hidden="true"
                       className={cn(
-                        "h-1.5 rounded-full",
+                        "h-1.5 rounded-full transition-all duration-large ease-standard motion-reduce:transition-none",
                         index < filledSegments
                           ? TONE_STYLES[budget.tone]
                           : "bg-muted",
+                        index < filledSegments &&
+                          "hover:opacity-80 hover:scale-110",
                       )}
                       key={index}
+                      style={{
+                        transitionDelay: `${index * 30}ms`,
+                      }}
                     />
                   ))}
                 </div>
