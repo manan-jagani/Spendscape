@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { PremiumHover } from "@/components/motion/premium-hover";
 import { cn } from "@/lib/utils";
 
 function Card({
@@ -12,16 +13,16 @@ function Card({
   variant?: "default" | "glass";
 }) {
   return (
-    <div
+    <PremiumHover
       data-slot="card"
       data-size={size}
       data-variant={variant}
       className={cn(
-        "group/card flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm transition-all duration-normal ease-standard [--card-spacing:--spacing(6)] motion-reduce:transition-none has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(4)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
+        "group/card relative flex flex-col gap-(--card-spacing) overflow-hidden rounded-xl py-(--card-spacing) text-sm [--card-spacing:--spacing(6)] has-data-[slot=card-footer]:pb-0 has-[>img:first-child]:pt-0 data-[size=sm]:[--card-spacing:--spacing(4)] data-[size=sm]:has-data-[slot=card-footer]:pb-0 *:[img:first-child]:rounded-t-xl *:[img:last-child]:rounded-b-xl",
         variant === "default" &&
-          "glass-premium text-card-foreground hover:glass-premium-hover hover:-translate-y-0.5 hover:scale-[1.01] hover:z-10",
+          "glass-premium text-card-foreground hover:glass-premium-hover hover:z-10",
         variant === "glass" &&
-          "glass-premium text-card-foreground hover:glass-premium-hover hover:-translate-y-0.5 hover:scale-[1.01] hover:z-10",
+          "glass-premium text-card-foreground hover:glass-premium-hover hover:z-10",
         className,
       )}
       {...props}

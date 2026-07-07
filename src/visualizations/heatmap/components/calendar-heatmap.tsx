@@ -96,12 +96,8 @@ export function CalendarHeatmap({
     return { cells: allCells, maxValue: maxVal, monthLabels: labels };
   }, [data, months, currentYear, currentMonth]);
 
-  const getCellColor = (value: number) => {
-    if (value === 0) return "hsl(var(--muted))";
-    const intensity = Math.min(value / (maxValue || 1), 1);
-    const opacity = 0.2 + intensity * 0.8;
-    return `hsla(var(--expense-hsl), ${opacity})`;
-  };
+  const getCellColor = (value: number) =>
+    value === 0 ? "var(--muted)" : "var(--expense)";
 
   const totalWidth =
     PADDING * 2 + DAY_LABEL_WIDTH + (globalWeekCount(monthLabels) + months) * (CELL_SIZE + CELL_GAP);
@@ -127,7 +123,7 @@ export function CalendarHeatmap({
         {/* Month labels */}
         {monthLabels.map((ml) => (
           <text
-            fill="hsl(var(--muted-foreground))"
+            fill="var(--muted-foreground)"
             fontSize={10}
             key={`month-${ml.label}`}
             x={PADDING + DAY_LABEL_WIDTH + ml.x * (CELL_SIZE + CELL_GAP)}
@@ -140,7 +136,7 @@ export function CalendarHeatmap({
         {/* Day labels */}
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day, i) => (
           <text
-            fill="hsl(var(--muted-foreground))"
+            fill="var(--muted-foreground)"
             fontSize={9}
             key={day}
             textAnchor="end"
@@ -168,6 +164,7 @@ export function CalendarHeatmap({
                 shouldReduceMotion ? { opacity: 1 } : { opacity: 1 }
               }
               fill={getCellColor(cell.value)}
+              opacity={cell.value === 0 ? 1 : 0.2 + Math.min(cell.value / (maxValue || 1), 1) * 0.8}
               height={CELL_SIZE}
               initial={
                 shouldReduceMotion ? { opacity: 0 } : { opacity: 0 }

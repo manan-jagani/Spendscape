@@ -20,7 +20,7 @@ export function TransactionsList({
   }
 
   return (
-    <div className="divide-y divide-border overflow-hidden rounded-xl border border-border">
+    <div className="divide-y divide-border/50">
       {transactions.map((transaction) => (
         <TransactionRow
           key={transaction.id}

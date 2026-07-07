@@ -36,7 +36,7 @@ export function TopCategories({
         name: c.category_name ?? "Uncategorized",
         amount: c.total,
         budget: 0,
-        color: c.color ?? "hsl(var(--muted-foreground))",
+        color: c.color ?? "var(--muted-foreground)",
       }));
 
     return cats;

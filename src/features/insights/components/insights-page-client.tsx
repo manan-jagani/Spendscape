@@ -1,15 +1,19 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import {
-  ArrowDownUp,
-  CheckCheck,
-  Search,
-  Sparkles,
-} from "lucide-react";
+import { CheckCheck, Search, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectItem,
+  SelectItemText,
+  SelectList,
+  SelectPopup,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useInsights } from "@/features/insights/hooks/use-insights";
 import { useMarkAllRead } from "@/features/insights/hooks/use-mark-all-read";
@@ -101,7 +105,6 @@ export function InsightsPageClient() {
   const [kindFilter, setKindFilter] = useState<InsightFilterKind>("all");
   const [readFilter, setReadFilter] = useState<ReadFilter>("all");
   const [sortOption, setSortOption] = useState<SortOption>("newest");
-  const [sortOpen, setSortOpen] = useState(false);
 
   const [selectedInsight, setSelectedInsight] = useState<InsightRow | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
@@ -235,36 +238,25 @@ export function InsightsPageClient() {
               {readFilter === "unread" ? "Unread" : "All"}
             </Button>
 
-            <div className="relative">
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setSortOpen(!sortOpen)}
-              >
-                <ArrowDownUp className="size-3.5" />
-                {sortOption === "newest" ? "Newest" : "Oldest"}
-              </Button>
-              {sortOpen && (
-                <div className="absolute right-0 top-full z-10 mt-1 min-w-32 rounded-lg border border-border bg-popover p-1 shadow-card">
+            <Select
+              value={sortOption}
+              onValueChange={(v) => setSortOption(v as SortOption)}
+            >
+              <SelectTrigger className="h-9 w-[130px]">
+                <SelectValue placeholder="Sort" />
+              </SelectTrigger>
+              <SelectPopup>
+                <SelectList>
                   {(["newest", "oldest"] as SortOption[]).map((option) => (
-                    <button
-                      key={option}
-                      className={`flex w-full cursor-default items-center rounded-md px-2.5 py-1.5 text-sm outline-hidden select-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring ${
-                        sortOption === option
-                          ? "text-foreground font-medium"
-                          : "text-muted-foreground"
-                      }`}
-                      onClick={() => {
-                        setSortOption(option);
-                        setSortOpen(false);
-                      }}
-                    >
-                      {option === "newest" ? "Newest" : "Oldest"}
-                    </button>
+                    <SelectItem key={option} value={option}>
+                      <SelectItemText>
+                        {option === "newest" ? "Newest" : "Oldest"}
+                      </SelectItemText>
+                    </SelectItem>
                   ))}
-                </div>
-              )}
-            </div>
+                </SelectList>
+              </SelectPopup>
+            </Select>
           </div>
         </div>
       </div>

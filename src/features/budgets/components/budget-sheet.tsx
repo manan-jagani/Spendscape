@@ -59,15 +59,15 @@ export function BudgetSheet({
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent className="w-[min(24rem,92vw)]">
-        <SheetHeader>
+      <SheetContent className="w-[min(28rem,95vw)]">
+        <SheetHeader className="px-6 pt-6">
           <SheetTitle>
             {budget ? "Edit budget" : "Create budget"}
           </SheetTitle>
           <SheetDescription>
             {budget
               ? "Update the budget details below."
-              : "Set a spending limit for a category."}
+              : "Set a spending limit for a category and track your progress."}
           </SheetDescription>
         </SheetHeader>
 

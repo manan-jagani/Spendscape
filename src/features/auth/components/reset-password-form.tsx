@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { useActionState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -82,6 +83,15 @@ export function ResetPasswordForm() {
           <ArrowRight aria-hidden="true" className="size-4" />
         </Button>
       </form>
+
+      <p className="mt-6 text-center text-xs text-muted-foreground">
+        <Link
+          className="font-medium text-foreground underline-offset-2 outline-none transition-colors duration-fast hover:text-foreground/80 focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none"
+          href="/auth/login"
+        >
+          Back to sign in
+        </Link>
+      </p>
     </AuthCard>
   );
 }

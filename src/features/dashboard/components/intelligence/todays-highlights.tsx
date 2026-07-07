@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { SectionHeading } from "@/features/dashboard/components/section-heading";
-import { MOTION_TRANSITION } from "@/lib/motion";
+import { MOTION_TRANSITION, SPRING } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import type { TransactionPageRow, MonthlySummary } from "@/types/api.types";
 
@@ -152,8 +152,9 @@ export function TodaysHighlights({
             <motion.li
               key={h.key}
               animate={{ opacity: 1, x: 0 }}
+              whileHover={reduce ? {} : { x: 4, transition: SPRING.gentle }}
               className={cn(
-                "flex items-center gap-3 rounded-lg border p-3 transition-colors duration-fast ease-standard motion-reduce:transition-none",
+                "flex items-center gap-3 rounded-lg border p-3 motion-reduce:transition-none",
                 "border-border hover:border-border-strong",
               )}
               initial={reduce ? { opacity: 1 } : { opacity: 0, x: -8 }}

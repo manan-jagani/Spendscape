@@ -68,7 +68,7 @@ export function DeleteDialog({
         )}
 
         {error && (
-          <p className="text-sm text-negative">{error}</p>
+          <p aria-live="polite" className="text-sm text-negative">{error}</p>
         )}
 
         <div className="flex items-center justify-end gap-3">

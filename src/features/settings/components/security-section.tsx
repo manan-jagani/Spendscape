@@ -14,15 +14,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Field } from "@base-ui/react/field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -154,43 +145,21 @@ export function SecuritySection() {
               Permanently delete your account and all your data.
             </p>
           </div>
-          <Dialog>
-            <DialogTrigger
-              render={
-                <Button size="sm" variant="outline">
-                  <Trash2 aria-hidden="true" className="size-4" />
-                  Delete account
-                </Button>
-              }
-            />
-            <DialogContent>
-              <DialogHeader className="px-6 pt-6">
-                <DialogTitle>Delete your account?</DialogTitle>
-                <DialogDescription>
-                  This action cannot be undone. All your data, including
-                  accounts, transactions, budgets, and insights will be
-                  permanently deleted.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="flex items-center justify-end gap-2 px-6 pb-6">
-                <DialogClose
-                  render={
-                    <Button size="sm" variant="outline">
-                      Cancel
-                    </Button>
-                  }
-                />
-                <Button
-                  disabled
-                  size="sm"
-                  variant="danger"
-                >
-                  <Trash2 aria-hidden="true" className="size-4" />
-                  Delete permanently
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <div className="relative inline-flex">
+            <Button
+              aria-disabled="true"
+              className="pr-9"
+              disabled
+              size="sm"
+              variant="outline"
+            >
+              <Trash2 aria-hidden="true" className="size-4" />
+              Delete account
+            </Button>
+            <span className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/3 rounded-full bg-muted-foreground/10 px-1.5 py-0.5 text-2xs font-medium text-muted-foreground ring-1 ring-inset ring-muted-foreground/20">
+              Soon
+            </span>
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -26,6 +26,7 @@ const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
         </label>
         <div className="relative">
           <input
+            aria-describedby={error ? `${fieldId}-error` : undefined}
             className={cn(
               "flex h-10 w-full rounded-lg border bg-background px-3 py-2 pr-10 text-sm text-foreground outline-none transition-all duration-fast ease-standard placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:bg-background/85 focus-visible:glass focus-visible:backdrop-blur-[12px] motion-reduce:transition-none",
               error
@@ -53,7 +54,7 @@ const PasswordField = forwardRef<HTMLInputElement, PasswordFieldProps>(
           </button>
         </div>
         {error ? (
-          <p className="text-xs text-negative" role="alert">
+          <p className="text-xs text-negative" id={`${fieldId}-error`} role="alert">
             {error}
           </p>
         ) : null}

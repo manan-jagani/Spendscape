@@ -16,6 +16,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  ACCOUNT_TYPE_COLORS,
+  ACCOUNT_TYPE_ICONS,
   ACCOUNT_TYPE_LABELS,
 } from "@/features/accounts/types";
 
@@ -68,11 +70,6 @@ export function AccountForm({
   const selectedType = useWatch({ control, name: "type" });
   const isEditing = !!account;
 
-  const typeItems = ACCOUNT_TYPES.map((t) => ({
-    value: t.value,
-    label: t.label,
-  }));
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
       <div className="flex flex-col gap-1.5">
@@ -98,18 +95,26 @@ export function AccountForm({
           onValueChange={(value) =>
             setValue("type", value as AccountType)
           }
-          items={typeItems}
         >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select type" />
           </SelectTrigger>
           <SelectPopup>
             <SelectList>
-              {ACCOUNT_TYPES.map((type) => (
-                <SelectItem key={type.value} value={type.value}>
-                  <SelectItemText>{type.label}</SelectItemText>
-                </SelectItem>
-              ))}
+              {ACCOUNT_TYPES.map((type) => {
+                const Icon = ACCOUNT_TYPE_ICONS[type.value];
+                const color = ACCOUNT_TYPE_COLORS[type.value];
+                return (
+                  <SelectItem key={type.value} value={type.value}>
+                    <Icon
+                      className="size-4"
+                      style={{ color }}
+                      aria-hidden="true"
+                    />
+                    <SelectItemText>{type.label}</SelectItemText>
+                  </SelectItem>
+                );
+              })}
             </SelectList>
           </SelectPopup>
         </Select>
@@ -148,23 +153,21 @@ export function AccountForm({
         )}
       </div>
 
-      {!isEditing && (
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-foreground" htmlFor="current_balance">
-            Opening Balance
-          </label>
-          <Input
-            id="current_balance"
-            type="number"
-            step="0.01"
-            placeholder="0.00"
-            {...register("current_balance")}
-          />
-          {errors.current_balance && (
-            <p className="text-xs text-negative">{errors.current_balance.message}</p>
-          )}
-        </div>
-      )}
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-foreground" htmlFor="current_balance">
+          {isEditing ? "Current Balance" : "Opening Balance"}
+        </label>
+        <Input
+          id="current_balance"
+          type="number"
+          step="0.01"
+          placeholder="0.00"
+          {...register("current_balance")}
+        />
+        {errors.current_balance && (
+          <p className="text-xs text-negative">{errors.current_balance.message}</p>
+        )}
+      </div>
 
       <div className="flex items-center justify-end gap-3 pt-2">
         <Button

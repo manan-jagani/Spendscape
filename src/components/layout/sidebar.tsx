@@ -41,8 +41,8 @@ function NavigationLinks({
               className={cn(
                 "group relative flex h-10 items-center gap-3 rounded-md px-3 text-sm transition-all duration-fast ease-standard outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring motion-reduce:transition-none",
                 isActive
-                  ? "bg-sidebar-accent/25 text-sidebar-foreground shadow-[inset_0_0_0_1px_oklch(1_0_0/0.06)] backdrop-blur-[4px]"
-                  : "text-muted-foreground hover:bg-sidebar-accent/15 hover:backdrop-blur-[4px] hover:text-sidebar-foreground hover:shadow-[inset_0_0_0_1px_oklch(1_0_0/0.04)]",
+                  ? "bg-sidebar-accent/20 text-sidebar-foreground shadow-[inset_0_0_0_1px_oklch(1_0_0/0.08)] backdrop-blur-[8px]"
+                  : "text-muted-foreground hover:bg-sidebar-accent/12 hover:backdrop-blur-[8px] hover:text-sidebar-foreground hover:shadow-[inset_0_0_0_1px_oklch(1_0_0/0.06)] hover:scale-[1.02]",
               )}
               href={item.href}
               key={item.href}
@@ -51,15 +51,15 @@ function NavigationLinks({
               {isActive ? (
                 <div
                   aria-hidden="true"
-                  className="absolute inset-y-1.5 left-0 w-0.5 rounded-r-md bg-sidebar-accent-foreground/30"
+                  className="absolute inset-y-1 left-0 w-0.5 rounded-r-md bg-sidebar-accent-foreground shadow-[0_0_8px_var(--sidebar-accent-foreground)]"
                 />
               ) : null}
               <Icon
                 aria-hidden="true"
                 className={cn(
-                  "size-4 transition-transform duration-fast group-hover:scale-110 motion-reduce:transition-none",
+                  "size-4 transition-all duration-fast group-hover:scale-110 group-hover:rotate-[2deg] motion-reduce:transition-none",
                   isActive
-                    ? "text-sidebar-foreground"
+                    ? "text-sidebar-accent-foreground"
                     : "text-muted-foreground group-hover:text-sidebar-foreground",
                 )}
                 strokeWidth={1.8}
@@ -84,8 +84,8 @@ function NavigationLinks({
             <Link
               aria-current={isActive ? "page" : undefined}
               className={cn(
-                "group relative flex h-10 items-center gap-3 rounded-md px-3 text-sm text-muted-foreground transition-all duration-fast ease-standard outline-none hover:bg-sidebar-accent/15 hover:backdrop-blur-[4px] hover:text-sidebar-foreground hover:shadow-[inset_0_0_0_1px_oklch(1_0_0/0.04)] focus-visible:ring-2 focus-visible:ring-sidebar-ring motion-reduce:transition-none",
-                isActive && "bg-sidebar-accent/25 text-sidebar-foreground shadow-[inset_0_0_0_1px_oklch(1_0_0/0.06)] backdrop-blur-[4px]",
+                "group relative flex h-10 items-center gap-3 rounded-md px-3 text-sm text-muted-foreground transition-all duration-fast ease-standard outline-none hover:bg-sidebar-accent/12 hover:backdrop-blur-[8px] hover:text-sidebar-foreground hover:shadow-[inset_0_0_0_1px_oklch(1_0_0/0.06)] hover:scale-[1.02] focus-visible:ring-2 focus-visible:ring-sidebar-ring motion-reduce:transition-none",
+                isActive && "bg-sidebar-accent/20 text-sidebar-foreground shadow-[inset_0_0_0_1px_oklch(1_0_0/0.08)] backdrop-blur-[8px]",
               )}
               href={item.href}
               key={item.href}
@@ -94,10 +94,19 @@ function NavigationLinks({
               {isActive ? (
                 <div
                   aria-hidden="true"
-                  className="absolute inset-y-1.5 left-0 w-0.5 rounded-r-md bg-sidebar-accent-foreground/30"
+                  className="absolute inset-y-1 left-0 w-0.5 rounded-r-md bg-sidebar-accent-foreground shadow-[0_0_8px_var(--sidebar-accent-foreground)]"
                 />
               ) : null}
-              <Icon aria-hidden="true" className="size-4" strokeWidth={1.8} />
+              <Icon
+                aria-hidden="true"
+                className={cn(
+                  "size-4 transition-all duration-fast group-hover:scale-110 group-hover:rotate-[2deg] motion-reduce:transition-none",
+                  isActive
+                    ? "text-sidebar-accent-foreground"
+                    : "text-muted-foreground group-hover:text-sidebar-foreground",
+                )}
+                strokeWidth={1.8}
+              />
               {item.label}
             </Link>
           );

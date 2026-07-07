@@ -23,13 +23,13 @@ export function CommandPalette() {
     function handleKeyDown(event: KeyboardEvent) {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
-        setOpen(!isOpen);
+        setOpen(!useShellStore.getState().isCommandPaletteOpen);
       }
     }
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, setOpen]);
+  }, [setOpen]);
 
   function navigate(href: string) {
     setOpen(false);

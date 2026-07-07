@@ -1,8 +1,9 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Reveal } from "@/components/motion/reveal";
+import { AmbientBackground } from "@/components/motion/ambient-background";
 import { AccountsOverview } from "@/features/dashboard/components/accounts-overview";
 import { BudgetOverview } from "@/features/dashboard/components/budget-overview";
 import { DashboardError } from "@/features/dashboard/components/dashboard-error";
@@ -31,6 +32,21 @@ import { useDailyExpenses } from "@/visualizations/lib/use-daily-expenses";
 import { CalendarHeatmap } from "@/visualizations/heatmap/components/calendar-heatmap";
 import { MonthlyTimeline } from "@/visualizations/timeline/components/monthly-timeline";
 import { SpendingTreemap } from "@/visualizations/treemap/components/spending-treemap";
+
+function LiveClock() {
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <span className="tabular-nums">
+      {time.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}
+    </span>
+  );
+}
 
 export function Dashboard() {
   const currentMonth = useMemo(() => getCurrentMonthFirst(), []);
@@ -180,29 +196,88 @@ export function Dashboard() {
     .map((c) => ({
       name: c.category_name ?? "Uncategorized",
       value: c.total,
-      color: c.color ?? "hsl(var(--muted-foreground))",
+      color: c.color ?? "var(--muted-foreground)",
     }));
 
   return (
     <div className="px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
-      <div className="grid grid-cols-12 gap-6">
+      {/* Ambient background — replaces the old section lighting */}
+      <AmbientBackground />
+
+      {/* Ambient gradient blobs (kept for colored atmosphere) */}
+      <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <div
+          className="absolute -top-40 left-1/4 h-[500px] w-[500px] opacity-[0.03] dark:opacity-[0.04] motion-reduce:animate-none"
+          style={{
+            background: "radial-gradient(circle, #F59E0B 0%, transparent 65%)",
+            filter: "blur(150px)",
+            animation: "glow-breathe 8s ease-in-out infinite",
+          }}
+        />
+        <div
+          className="absolute -bottom-40 right-1/4 h-[600px] w-[600px] opacity-[0.02] dark:opacity-[0.03] motion-reduce:animate-none"
+          style={{
+            background: "radial-gradient(circle, #6366F1 0%, transparent 65%)",
+            filter: "blur(180px)",
+            animation: "glow-breathe 10s ease-in-out infinite reverse",
+          }}
+        />
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[700px] w-[700px] opacity-[0.015] dark:opacity-[0.02] motion-reduce:animate-none"
+          style={{
+            background: "radial-gradient(circle, #0F9D76 0%, transparent 65%)",
+            filter: "blur(200px)",
+            animation: "glow-breathe 12s ease-in-out infinite 2s",
+          }}
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-[1600px] grid grid-cols-12 gap-4 md:gap-6">
 
         {/* ── Row 1: Greeting ── */}
         <Reveal className="col-span-12" delay={0}>
-          <header className="max-w-3xl">
-            <p className="text-[0.625rem] font-medium tracking-[0.15em] text-muted-foreground uppercase">
-              {dateStr}
-            </p>
-            <h1 className="mt-2 font-heading text-3xl font-medium tracking-[-0.045em] sm:text-4xl">
+          <header className="max-w-4xl">
+            <div className="flex flex-wrap items-center gap-2.5">
+              <p className="text-2xs font-medium tracking-[0.15em] text-muted-foreground uppercase">
+                {dateStr}
+              </p>
+              <span className="text-2xs text-muted-foreground/40" aria-hidden="true">·</span>
+              <p className="text-2xs font-medium tabular-nums text-muted-foreground">
+                <LiveClock />
+              </p>
+              <span className="text-2xs text-muted-foreground/40" aria-hidden="true">·</span>
+              <span className="inline-flex items-center gap-1 rounded-full bg-positive/10 px-2 py-0.5 text-[10px] font-medium text-positive">
+                <span aria-hidden="true" className="size-1.5 rounded-full bg-positive" />
+                {summaryData.savings_rate > 20 ? "On fire" : "Active"}
+              </span>
+            </div>
+            <h1 className="mt-3 font-heading text-4xl font-medium tracking-[-0.045em] sm:text-4xl md:text-5xl">
               {greeting}.
             </h1>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-base">
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base md:text-lg max-w-2xl">
               {summaryData.savings_rate > 0
                 ? `You're saving ${summaryData.savings_rate}% of your income this month.`
                 : summaryData.expense > 0
                   ? `You've spent ${formatCurrency(summaryData.expense)} so far this month.`
                   : "Add transactions to see your financial overview."}
             </p>
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              {summaryData.savings_rate > 0 && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-positive/20 bg-positive/5 px-3 py-1 text-[11px] font-medium text-positive">
+                  <span aria-hidden="true" className="size-1.5 rounded-full bg-positive" />
+                  Saving {summaryData.savings_rate}%
+                </span>
+              )}
+              {summaryData.savings_rate > 20 && (
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-income/20 bg-income/5 px-3 py-1 text-[11px] font-medium text-income">
+                  <span aria-hidden="true" className="size-1.5 rounded-full bg-income" />
+                  Above average
+                </span>
+              )}
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-border/30 bg-background/40 px-3 py-1 text-[11px] text-muted-foreground backdrop-blur-sm">
+                Net worth: {formatCurrency(summaryData.total_balance)}
+              </span>
+            </div>
           </header>
         </Reveal>
 
@@ -220,7 +295,7 @@ export function Dashboard() {
         {/* ── Row 3: Financial Galaxy (8) + Accounts (4) ── */}
         <Reveal className="col-span-8 flex flex-col [&>*]:flex-1" delay={0.08}>
           <ChartCard
-            className="[&_[data-slot=card-content]>div]:bg-black/15"
+            className="glass-hero"
             description="How your money is distributed across accounts, categories, and budgets"
             minHeight={440}
             title="Financial Galaxy"

@@ -13,7 +13,7 @@ export function PreferencesSection() {
       <CardHeader>
         <div className="flex items-center gap-2">
           <CardTitle>Preferences</CardTitle>
-          <Badge variant="outline" className="text-[0.625rem]">Coming soon</Badge>
+          <Badge variant="outline" className="text-2xs">Coming soon</Badge>
         </div>
         <CardDescription>
           Default account, transaction type, and formatting preferences.

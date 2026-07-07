@@ -113,7 +113,7 @@ export function MonthlyTimeline({
   }
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div className="relative min-h-[250px]" ref={containerRef}>
       <svg
         aria-label="Monthly spending timeline"
         height={dimensions.height}
@@ -122,8 +122,8 @@ export function MonthlyTimeline({
       >
         <defs>
           <linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stopColor="hsl(var(--expense))" stopOpacity={0.2} />
-            <stop offset="100%" stopColor="hsl(var(--expense))" stopOpacity={0} />
+            <stop offset="0%" stopColor="var(--expense)" stopOpacity={0.2} />
+            <stop offset="100%" stopColor="var(--expense)" stopOpacity={0} />
           </linearGradient>
         </defs>
 
@@ -131,7 +131,7 @@ export function MonthlyTimeline({
         {yTicks.map((tick) => (
           <g key={`y-${tick.label}`}>
             <text
-              fill="hsl(var(--muted-foreground))"
+              fill="var(--muted-foreground)"
               fontSize={10}
               textAnchor="end"
               x={MARGIN.left - 4}
@@ -140,7 +140,7 @@ export function MonthlyTimeline({
               {tick.label}
             </text>
             <line
-              stroke="hsl(var(--border))"
+              stroke="var(--border)"
               strokeDasharray="2,2"
               strokeWidth={1}
               x1={MARGIN.left}
@@ -166,7 +166,7 @@ export function MonthlyTimeline({
           d={areaPath}
           fill="none"
           initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0 }}
-          stroke="hsl(var(--expense))"
+          stroke="var(--expense)"
           strokeWidth={2}
           transition={{ duration: shouldReduceMotion ? 0 : 0.6, delay: 0.1 }}
         />
@@ -220,7 +220,7 @@ export function MonthlyTimeline({
         {hovered && (
           <>
             <line
-              stroke="hsl(var(--muted-foreground))"
+              stroke="var(--muted-foreground)"
               strokeDasharray="3,3"
               strokeWidth={1}
               x1={
@@ -251,9 +251,9 @@ export function MonthlyTimeline({
                 (hovered.point.value / (maxValue || 1)) *
                   (dimensions.height - MARGIN.top - MARGIN.bottom)
               }
-              fill="hsl(var(--expense))"
+              fill="var(--expense)"
               r={4}
-              stroke="hsl(var(--card))"
+              stroke="var(--card)"
               strokeWidth={2}
             />
           </>
@@ -262,7 +262,7 @@ export function MonthlyTimeline({
         {/* X-axis ticks */}
         {tickValues.map((tick) => (
           <text
-            fill="hsl(var(--muted-foreground))"
+            fill="var(--muted-foreground)"
             fontSize={10}
             key={tick.label}
             textAnchor="middle"

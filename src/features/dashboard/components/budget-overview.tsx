@@ -1,4 +1,8 @@
+"use client";
+
+import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { PremiumHover } from "@/components/motion/premium-hover";
 import { SectionHeading } from "@/features/dashboard/components/section-heading";
 import { cn } from "@/lib/utils";
 
@@ -38,7 +42,8 @@ export function BudgetOverview({
             const filledSegments = Math.round(budget.progress / 10);
 
             return (
-              <li key={budget.id}>
+              <PremiumHover key={budget.id} mode="row">
+              <li>
                 <div className="flex items-center justify-between gap-4 text-xs">
                   <span className="font-medium">{budget.name}</span>
                   <span className="tabular-nums text-muted-foreground">
@@ -54,24 +59,24 @@ export function BudgetOverview({
                   role="progressbar"
                 >
                   {Array.from({ length: 10 }, (_, index) => (
-                    <span
+                    <motion.span
                       aria-hidden="true"
                       className={cn(
-                        "h-1.5 rounded-full transition-all duration-large ease-standard motion-reduce:transition-none",
+                        "h-1.5 rounded-full",
                         index < filledSegments
                           ? TONE_STYLES[budget.tone]
                           : "bg-muted",
-                        index < filledSegments &&
-                          "hover:opacity-80 hover:scale-110",
                       )}
                       key={index}
-                      style={{
-                        transitionDelay: `${index * 30}ms`,
-                      }}
+                      initial={{ scaleY: 0 }}
+                      animate={{ scaleY: 1 }}
+                      transition={{ delay: index * 0.03, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      style={{ transformOrigin: "bottom" }}
                     />
                   ))}
                 </div>
               </li>
+              </PremiumHover>
             );
           })}
         </ul>

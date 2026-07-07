@@ -16,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { PremiumHover } from "@/components/motion/premium-hover";
 import { formatCurrency, formatRelativeTime } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
 
@@ -41,10 +42,16 @@ export function TransactionRow({
   const { className, icon: Icon } = KIND_STYLES[transaction.kind];
 
   return (
-    <div className="group relative flex items-center gap-3 px-4 py-3 transition-all duration-fast hover:bg-muted/20 motion-reduce:transition-none">
+    <PremiumHover
+      mode="row"
+      className="group relative flex items-center gap-3 px-4 py-3 motion-reduce:transition-none"
+    >
       <div
         aria-hidden="true"
-        className="absolute inset-y-2 left-0 w-0.5 rounded-r-md bg-foreground/10 opacity-0 transition-all duration-fast group-hover:opacity-100 motion-reduce:opacity-0"
+        className="absolute inset-y-2 left-0 w-0.5 rounded-r-md opacity-0 transition-all duration-fast group-hover:opacity-100 motion-reduce:opacity-100"
+        style={{
+          background: transaction.kind === "income" ? "var(--color-income)" : transaction.kind === "expense" ? "var(--color-expense)" : "var(--color-transfer)",
+        }}
       />
 
       <span
@@ -116,7 +123,7 @@ export function TransactionRow({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </div>
+    </PremiumHover>
   );
 }
 

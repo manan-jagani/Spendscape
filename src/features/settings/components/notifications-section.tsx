@@ -34,7 +34,7 @@ export function NotificationsSection() {
       <CardHeader>
         <div className="flex items-center gap-2">
           <CardTitle>Notifications</CardTitle>
-          <Badge variant="outline" className="text-[0.625rem]">Coming soon</Badge>
+          <Badge variant="outline" className="text-2xs">Coming soon</Badge>
         </div>
         <CardDescription>
           Control which notifications you receive and how.

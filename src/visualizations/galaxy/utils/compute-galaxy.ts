@@ -119,7 +119,7 @@ export function computeGalaxyData(
     centerY,
     sunRadius: SUN_BASE_RADIUS * scaleFactor,
     netWorth,
-    netWorthColor: "hsl(var(--color-savings))",
+    netWorthColor: "var(--color-savings)",
     planets,
     maxAccountBalance: maxBalance,
     maxCategorySpend,

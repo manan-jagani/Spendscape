@@ -22,7 +22,7 @@ export function AuthCard({
         <ThemeToggle />
       </div>
 
-      <div className="w-full max-w-sm">
+      <main className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <Link
             aria-label="Spendscape home"
@@ -43,7 +43,7 @@ export function AuthCard({
         <div className="rounded-xl border border-border/60 bg-background/80 p-6 shadow-xl backdrop-blur-xl sm:p-8">
           {children}
         </div>
-      </div>
+      </main>
     </div>
   );
 }

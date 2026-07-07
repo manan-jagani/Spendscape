@@ -58,6 +58,7 @@ export function SpendingStreak({
   }, [savingsRate]);
 
   const progress = streak.longest > 0 ? streak.current / streak.longest : 0;
+  const milestones = [25, 50, 75, 100];
 
   return (
     <Card>
@@ -85,19 +86,50 @@ export function SpendingStreak({
             </div>
             <p className="mt-1 text-xs text-muted-foreground">{streak.description}</p>
             {streak.longest > 0 && (
-              <motion.div
-                animate={{ opacity: 1 }}
-                className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted"
-                initial={{ opacity: 0 }}
-                transition={{ ...MOTION_TRANSITION.normal, delay: 0.3 }}
-              >
+              <>
                 <motion.div
-                  animate={{ width: `${progress * 100}%` }}
-                  className="h-full rounded-full bg-gradient-to-r from-savings to-income"
-                  initial={{ width: "0%" }}
-                  transition={{ ...MOTION_TRANSITION.large }}
-                />
-              </motion.div>
+                  animate={{ opacity: 1 }}
+                  className="mt-3 h-1.5 overflow-hidden rounded-full bg-muted"
+                  initial={{ opacity: 0 }}
+                  transition={{ ...MOTION_TRANSITION.normal, delay: 0.3 }}
+                >
+                  <motion.div
+                    animate={{ width: `${progress * 100}%` }}
+                    className="h-full rounded-full bg-gradient-to-r from-savings to-income"
+                    initial={{ width: "0%" }}
+                    transition={{ ...MOTION_TRANSITION.large }}
+                  />
+                </motion.div>
+                <div className="relative mt-1.5 h-3">
+                  <div className="absolute inset-x-0 flex justify-between px-[calc(0%)]">
+                    {milestones.map((m) => {
+                      const reached = (progress * 100) >= m;
+                      return (
+                        <div
+                          key={m}
+                          className={cn(
+                            "flex flex-col items-center gap-0.5 transition-colors duration-normal",
+                            reached ? "text-savings" : "text-muted-foreground/30",
+                          )}
+                          aria-label={`${m}% milestone${reached ? " reached" : ""}`}
+                        >
+                          <motion.div
+                            animate={reached ? { scale: [1, 1.3, 1] } : { scale: 1 }}
+                            className={cn(
+                              "size-1.5 rounded-full",
+                              reached ? "bg-savings" : "bg-muted-foreground/20",
+                            )}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                          />
+                          <span className="text-[8px] font-medium tabular-nums leading-none">
+                            {m}%
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
             )}
           </div>
         </div>

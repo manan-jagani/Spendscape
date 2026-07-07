@@ -42,12 +42,12 @@ export function ThemeToggle({ className }: { className?: string }) {
         <Sun
           aria-hidden="true"
           className={`absolute inset-0 size-4 transition-all duration-500 motion-reduce:transition-none ${isDark ? "scale-100 rotate-0 opacity-100" : "scale-0 rotate-90 opacity-0"}`}
-          style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)" }}
+          style={{ transitionTimingFunction: "var(--ease-standard)" }}
         />
         <Moon
           aria-hidden="true"
           className={`absolute inset-0 size-4 transition-all duration-500 motion-reduce:transition-none ${isDark ? "scale-0 -rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"}`}
-          style={{ transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)" }}
+          style={{ transitionTimingFunction: "var(--ease-standard)" }}
         />
       </span>
     </Button>

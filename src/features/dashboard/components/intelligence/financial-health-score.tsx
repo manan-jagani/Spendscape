@@ -143,7 +143,7 @@ function ProgressRing({
         cy={size / 2}
         fill="none"
         r={r}
-        stroke="hsl(var(--muted))"
+        stroke="var(--muted)"
         strokeWidth={strokeWidth}
       />
       <motion.circle

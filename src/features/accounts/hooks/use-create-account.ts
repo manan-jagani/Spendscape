@@ -8,12 +8,14 @@ import { useMemo } from "react";
 
 import { queryKeys } from "@/lib/query-keys";
 import { createClient } from "@/lib/supabase/client";
+import { useToastStore } from "@/components/ui/toast";
 
 import type { CreateAccountInput } from "@/features/accounts/types";
 
 export function useCreateAccount() {
   const supabase = useMemo(() => createClient(), []);
   const queryClient = useQueryClient();
+  const addToast = useToastStore((s) => s.addToast);
 
   return useMutation({
     mutationFn: async (input: CreateAccountInput) => {
@@ -28,6 +30,10 @@ export function useCreateAccount() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.accounts() });
+      addToast({ type: "success", title: "Account created" });
+    },
+    onError: () => {
+      addToast({ type: "error", title: "Failed to create account" });
     },
   });
 }

@@ -16,7 +16,7 @@ export function SectionHeading({
   return (
     <div className="flex items-start justify-between gap-4">
       <div className="min-w-0">
-        <h2 className="font-heading text-base font-medium tracking-tight text-foreground">
+        <h2 className="font-heading text-base font-semibold tracking-tight text-foreground">
           {title}
         </h2>
         {description ? (

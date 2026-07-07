@@ -1,3 +1,12 @@
+import {
+  Building2,
+  PiggyBank,
+  CreditCard,
+  Wallet,
+  TrendingUp,
+  CircleDollarSign,
+} from "lucide-react";
+
 import type { Enums } from "@/types/database.types";
 
 export type AccountType = Enums<"account_type">;
@@ -29,6 +38,7 @@ export interface UpdateAccountInput {
   institution?: string | null;
   type?: AccountType;
   currency?: string;
+  current_balance?: number;
 }
 
 export interface AccountFormValues {
@@ -49,10 +59,43 @@ export const ACCOUNT_TYPE_LABELS: Record<AccountType, string> = {
 };
 
 export const ACCOUNT_TYPE_COLORS: Record<AccountType, string> = {
-  checking: "hsl(217, 91%, 60%)",
-  savings: "hsl(160, 84%, 39%)",
-  credit_card: "hsl(38, 92%, 50%)",
-  cash: "hsl(271, 81%, 56%)",
-  investment: "hsl(190, 90%, 50%)",
-  loan: "hsl(0, 84%, 60%)",
+  checking: "oklch(0.65 0.12 165)",
+  savings: "oklch(0.72 0.10 85)",
+  credit_card: "oklch(0.45 0.02 0)",
+  cash: "oklch(0.65 0.08 175)",
+  investment: "oklch(0.55 0.14 165)",
+  loan: "oklch(0.68 0.12 75)",
 };
+
+export const ACCOUNT_TYPE_ACCENT: Record<AccountType, string> = {
+  checking: "emerald",
+  savings: "gold",
+  credit_card: "graphite",
+  cash: "teal",
+  investment: "deep-emerald",
+  loan: "amber",
+};
+
+export const ACCOUNT_TYPE_ICONS: Record<AccountType, typeof Building2> = {
+  checking: Building2,
+  savings: PiggyBank,
+  credit_card: CreditCard,
+  cash: Wallet,
+  investment: TrendingUp,
+  loan: CircleDollarSign,
+};
+
+export type SortOption =
+  | "newest"
+  | "oldest"
+  | "highest-balance"
+  | "lowest-balance"
+  | "alphabetical";
+
+export const SORT_OPTIONS: { value: SortOption; label: string }[] = [
+  { value: "newest", label: "Newest" },
+  { value: "oldest", label: "Oldest" },
+  { value: "highest-balance", label: "Highest Balance" },
+  { value: "lowest-balance", label: "Lowest Balance" },
+  { value: "alphabetical", label: "Alphabetical" },
+];

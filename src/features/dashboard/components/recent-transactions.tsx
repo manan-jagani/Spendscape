@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { PremiumHover } from "@/components/motion/premium-hover";
 import { SectionHeading } from "@/features/dashboard/components/section-heading";
 import { cn } from "@/lib/utils";
 
@@ -49,9 +50,9 @@ export function RecentTransactions({
             const { className, icon: Icon } = KIND_STYLES[transaction.kind];
 
             return (
+              <PremiumHover key={transaction.id} mode="row">
               <li
-                className="flex items-center gap-3 py-4 first:pt-2 last:pb-0 transition-colors duration-fast ease-standard hover:bg-muted/30 -mx-(--card-spacing) px-(--card-spacing) motion-reduce:transition-none"
-                key={transaction.id}
+                className="flex items-center gap-3 py-4 first:pt-2 last:pb-0 -mx-(--card-spacing) px-(--card-spacing) motion-reduce:transition-none"
               >
                 <span
                   className={cn(
@@ -84,6 +85,7 @@ export function RecentTransactions({
                   {transaction.amount}
                 </span>
               </li>
+              </PremiumHover>
             );
           })}
         </ul>

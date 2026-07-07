@@ -8,12 +8,14 @@ import {
 
 import { queryKeys } from "@/lib/query-keys";
 import { createClient } from "@/lib/supabase/client";
+import { useToastStore } from "@/components/ui/toast";
 
 import type { CreateBudgetInput } from "@/features/budgets/types";
 
 export function useCreateBudget() {
   const supabase = useMemo(() => createClient(), []);
   const queryClient = useQueryClient();
+  const addToast = useToastStore((s) => s.addToast);
 
   return useMutation({
     mutationFn: async (input: CreateBudgetInput) => {
@@ -28,6 +30,18 @@ export function useCreateBudget() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.budgets() });
+      addToast({
+        type: "success",
+        title: "Budget created",
+        description: "Your budget has been set up successfully.",
+      });
+    },
+    onError: () => {
+      addToast({
+        type: "error",
+        title: "Failed to create budget",
+        description: "Something went wrong. Please try again.",
+      });
     },
   });
 }

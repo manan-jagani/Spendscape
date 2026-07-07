@@ -1,6 +1,7 @@
 import { Landmark } from "lucide-react";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { PremiumHover } from "@/components/motion/premium-hover";
 import { SectionHeading } from "@/features/dashboard/components/section-heading";
 import { cn } from "@/lib/utils";
 
@@ -37,7 +38,8 @@ export function AccountsOverview({
       <CardContent>
         <ul className="space-y-4">
           {accounts.map((account) => (
-            <li className="flex items-center gap-3 transition-colors duration-fast ease-standard hover:bg-muted/30 -mx-(--card-spacing) px-(--card-spacing) rounded-sm motion-reduce:transition-none" key={account.id}>
+            <PremiumHover key={account.id} mode="row">
+              <li className="flex items-center gap-3 -mx-(--card-spacing) px-(--card-spacing) rounded-sm motion-reduce:transition-none">
               <span className="relative grid size-9 shrink-0 place-items-center rounded-md bg-muted text-muted-foreground">
                 <Landmark
                   aria-hidden="true"
@@ -63,6 +65,7 @@ export function AccountsOverview({
                 {account.balance}
               </span>
             </li>
+            </PremiumHover>
           ))}
         </ul>
       </CardContent>

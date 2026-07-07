@@ -25,7 +25,7 @@ export const InsightCard = memo(function InsightCard({
     <Card
       size="sm"
       className={cn(
-        "relative flex cursor-pointer flex-col transition-all duration-fast hover:-translate-y-0.5 hover:shadow-lg hover:bg-muted/30 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none",
+        "relative flex cursor-pointer flex-col focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background motion-reduce:transition-none",
         !insight.is_read && "border-l-[3px] border-l-investment",
       )}
       onClick={() => onSelect(insight)}
